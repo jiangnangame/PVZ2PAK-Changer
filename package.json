@@ -1,0 +1,14 @@
+{
+    "name": "换装器",
+    "main": "app/index.html",
+    "window": {
+        "frame": false,
+        "transparent": true,
+        "width": 500,
+        "height": 700,
+        "min_width": 500,
+        "min_height": 700,
+        "max_width": 500,
+        "max_height": 700
+    }
+}

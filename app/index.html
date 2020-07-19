@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <link rel='stylesheet' href='app.css'>
+    </head>
+    <body style='-webkit-app-region: drag;'>
+        <button id='closeButton'></button>
+        <button id='returnButton'></button>
+        <button id='remove'></button>
+        <input type='text' id='userDir' readonly="readonly" value='（请选择）'/>
+        <button id='choose'></button>
+        <input type='file' id='file' style='display: none;' nwdirectory/>
+        <button id='themeTabel'></button>  
+        <button id='plantTabel' class='table current'></button>
+        <button id='zombieTabel' class='table'></button>
+        <div class='wrap' id='plants'></div>
+        <div class='wrap' id='zombies' style='display: none;'></div>
+        <div class='wrap' id='theme' style='display: none;'></div>
+        <div class='wrap' id='orns'></div>
+        <img src='images/bored.png' id='fix'>
+    </body>
+    <script src='app.js'></script>
+    <script>
+    closeButton.onclick = () => nw.App.quit();
+    choose.onclick = () => {
+        let x = file.click.bind(file)
+        setTimeout(x, 100);
+    }
+    file.onchange = function() {
+        MyApp.init(this.files[0].path);
+    };
+    remove.onclick = function() {
+        if(confirm('确定要取消所有装扮吗？')) {
+            MyApp.removeAll();
+        }
+    };
+    addEventListener('click', event => {
+        let ele = event.target;
+        if(ele.classList.contains('tab')) {
+            MyApp.renderSelectors(JSON.parse(ele.dataset.orn), ele.dataset.target);
+        }
+    });
+    returnButton.onclick = function() {
+        MyTools.hide(orns, returnButton);
+        MyTools.show(plantTabel, zombieTabel, themeTabel);
+    };
+    orns.addEventListener('click', event => {
+        let ele = event.target;
+        if(ele.className === 'tab orn') {
+            MyApp.copy(JSON.parse(ele.dataset.res), JSON.parse(ele.dataset.target)).then(_ => alert('换装成功！'));
+        }
+    });
+    zombieTabel.onclick = () => {
+        plantTabel.classList.remove('current');
+        zombieTabel.classList.add('current');
+        MyTools.show(zombies);
+        MyTools.hide(plants, theme);
+    };
+    plantTabel.onclick = () => {
+        zombieTabel.classList.remove('current');
+        plantTabel.classList.add('current');
+        MyTools.show(plants);
+        MyTools.hide(zombies, theme);
+    };
+    themeTabel.onclick = () => {
+        zombieTabel.classList.remove('current');
+        plantTabel.classList.remove('current');
+        MyTools.show(theme);
+        MyTools.hide(zombies, plants);
+    };
+    </script>
+</html>
